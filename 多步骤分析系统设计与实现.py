@@ -24,7 +24,7 @@ s9 = get_file_content("step9.py")
 s10 = get_file_content("step10.py")
 
 st.set_page_config(
-            page_title="03_谢卓君",  # 页面标题
+            page_title="多步骤分析系统设计与实训",  # 页面标题
             layout='wide',
         )
 
