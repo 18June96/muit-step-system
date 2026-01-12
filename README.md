@@ -1,22 +1,23 @@
-# 一、项目概述
+# 多步骤分析系统设计与实现技术文档
+## 一、项目概述
 　　本系统是一个集成化的金融数据实验平台，主要用于演示和执行一系列与股票市场分析相关的数据处理任务。系统采用 Streamlit 作为前端框架，允许用户通过侧边栏选择不同的实验模块，动态加载并展示代码、原始数据及计算结果。
-# 二、技术架构
+## 二、技术架构
 　　核心框架: **Streamlit** (用于构建 Web 交互界面)  
 　　数据处理: **Pandas** (用于数据读取、清洗和分析)  
 　　可视化: **Matplotlib** (用于绘制金融走势图)  
 　　代码组织: **模块化编程** (将不同功能拆分为独立文件)  
-# 三、文件结构
+## 三、文件结构
 　　step1.py 至 step10.py	————存放具体的业务逻辑和计算函数，被主程序动态导入；  
 　　申万行业分类.xlsx	————存储股票代码与所属行业的映射关系；  
 　　上市公司财务与指标数据2013-2017.xlsx	————存储公司的财务指标数据；  
 　　股票交易数据_2017.xlsx	————存储 2017 年的股票交易记录；  
-　　沪深300指数交易数据表.xlsx	————存储沪深300指数的历史交易数据。
+　　沪深300指数交易数据表.xlsx	————存储沪深300指数的历史交易数据。  
 　　**数据来源**：tushre数据https://tushare.pro/
-# 四、核心功能详解
+## 四、核心功能详解
 系统通过侧边栏菜单驱动，共包含 10 个 主要实验模块。  
-## 4.1 模块 1-4：数据获取与财务分析
+### 4.1 模块 1-4：数据获取与财务分析
 这部分主要关注于**申万家用电器行业**的数据处理。  
-### 模块 1: 申万家用电器行业股票代码获取  
+#### 模块 1: 申万家用电器行业股票代码获取  
 　　功能: 读取行业分类表，提取属于“家用电器”行业的所有股票代码及简称。  
 　　数据源: 申万行业分类.xlsx  
 　　输出: 股票代码与简称的对应列表。  
@@ -32,7 +33,7 @@ def return_values():
     Fs = pd.Series(F['股票名称'].values,index=F['股票代码'])
     return Fs
 ```
-### 模块 2: 申万家用电器行业股票财务指标数据获取  
+#### 模块 2: 申万家用电器行业股票财务指标数据获取  
 　　功能: 从庞大的财务数据库中筛选出特定行业的财务数据。  
 　　数据源: 上市公司财务与指标数据2013-2017.xlsx  
 　　输出: 原始财务指标数据集。  
@@ -55,7 +56,7 @@ def return_values():
  
     return data
 ```
-### 模块 3: 申万家用电器行业股票财务指标数据处理  
+#### 模块 3: 申万家用电器行业股票财务指标数据处理  
 　　功能: 对原始财务数据进行清洗、标准化或特征提取（具体逻辑取决于 step3.py 内容）。  
 　　输入: 模块 2 的输出结果。  
 　　输出: 处理后的数值矩阵及对应的股票代码。  
@@ -79,7 +80,7 @@ def return_values():
     
     return (x,code)
 ```
-### 模块 4: 主成分累计贡献率在95%  
+#### 模块 4: 主成分累计贡献率在95%  
 　　功能: 应用主成分分析技术，确定能够解释 95% 数据方差所需的主成分数量。  
 　　输入: 模块 3 处理后的数据。  
 　　输出: 主成分分析结果（如特征值、贡献率等）。  
@@ -101,9 +102,9 @@ def return_values():
  
     return Y
 ```
-## 4.2 模块 5-6：家电行业交易分析  
+### 4.2 模块 5-6：家电行业交易分析  
 这部分专注于家电行业的**市场交易行为**分析。  
-### 模块 5: 家电行业2017年的股票交易数据  
+#### 模块 5: 家电行业2017年的股票交易数据  
 　　功能: 读取并展示 2017 年的交易数据，并绘制前 5 只股票的收盘价走势图。  
 　　数据源: 股票交易数据_2017.xlsx  
 　　可视化: 使用 Matplotlib 绘制多条折线图，展示不同股票的价格趋势。  
@@ -123,7 +124,7 @@ def return_values():
     data = A[A['Stkcd'].isin(stkcd)]
     return data
 ```
-### 模块 6: 家用电器行业交易指数  
+#### 模块 6: 家用电器行业交易指数  
 　　功能: 计算并展示该行业的综合交易指数走势。  
 　　可视化: 绘制行业指数随时间变化的折线图，X 轴按月显示。  
 ```python
@@ -147,9 +148,9 @@ def return_values():
  
     return index_val
 ```
-## 4.3 模块 7-10：沪深300指数技术分析  
+### 4.3 模块 7-10：沪深300指数技术分析  
 这部分专注于**沪深300指数**的**技术指标计算与分析**。  
-### 模块 7: 沪深300指数年度涨跌幅  
+#### 模块 7: 沪深300指数年度涨跌幅  
 　　功能: 计算沪深300指数每年的涨跌幅情况。  
 　　数据源: 沪深300指数交易数据表.xlsx  
 ```python
@@ -185,7 +186,7 @@ def return_values():
     r4=rdata('2017-01-01','2017-12-31',A)
     return (r1,r2,r3,r4)
 ```
-### 模块 8: 沪深300指数2016年指数的关键转折点  
+#### 模块 8: 沪深300指数2016年指数的关键转折点  
 　　功能: 识别并标记 2016 年指数走势中的关键转折点（如波峰波谷）。  
 　　可视化: 在指数走势图上用红色散点标出转折点位置。  
 ```python
@@ -236,7 +237,7 @@ def return_values():
     keydata = pd.Series(sel_p, index=sel_i)
     return keydata
 ```
-### 模块 9: 沪深300指数2016年平均收盘  
+#### 模块 9: 沪深300指数2016年平均收盘  
 　　功能: 计算不同周期（如 10日、20日、60日）的移动平均线。  
 　　可视化: 绘制指数收盘价与多条均线的叠加图，用于观察趋势支撑与压力。  
 ```python
@@ -268,7 +269,7 @@ def return_values():
  
     return (x10,x20,x30,x60)
 ```
-### 模块 10: 沪深300指数2016年收盘指数的现价指标  
+#### 模块 10: 沪深300指数2016年收盘指数的现价指标  
 功能: 计算与收盘价相关的技术指标（如乖离率、动量等，具体取决于 step10.py 逻辑）。  
 ```python
 '''
@@ -296,7 +297,7 @@ def return_values():
     p10 = p10.reset_index(drop=True)   #reset_index()——重置索引
     return p10
 ```
-# 五、关键代码逻辑分析
+## 五、关键代码逻辑分析
 1. 动态代码加载  
 系统通过读取 .py 文件的内容，并使用 st.code() 在网页上展示源代码，实现了“代码可见”的教学目的。
 ```python
@@ -336,8 +337,8 @@ s10 = get_file_content("step10.py")
 plt.rcParams['font.sans-serif'] = 'SimHei'
 plt.rcParams['axes.unicode_minus'] = False
 ```
-# 六、高级可视化子系统
-## 6.1 step5：股票走势可视化
+## 六、高级可视化子系统
+### 6.1 step5：股票走势可视化
 　　多只股票对比，采用多线图，每条线代表一只股票，数据自动选取前5只股票，避免图表过于拥挤；使用groupby按股票代码分组绘制。
 <img width="1860" height="843" alt="image" src="https://github.com/user-attachments/assets/4dbcd882-cd9c-4492-8614-8854c0c327d2" />
 ```python
@@ -356,7 +357,7 @@ elif step_num == 5:
     for code, group in plot_data.groupby('Stkcd'):
         plt.plot(group['Trddt'], group['Clsprc'], markersize=3, label=str(code))
 ```
-## 6.2 step6：行业指数可视化
+### 6.2 step6：行业指数可视化
 　　单一指数走势，采用单线图，重点是时间序列模式。
 <img width="1860" height="855" alt="image" src="https://github.com/user-attachments/assets/063fa83e-0ddd-47c1-9fa0-0abc922e632c" />
 ```python
@@ -375,7 +376,7 @@ ax.plot(df['Trddt'][:501], df['行业指数'][:501], linewidth=2, color='blue', 
 ax.xaxis.set_major_locator(mdates.MonthLocator())  # 按月设置刻度
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m'))  # 格式为年月
 ```
-## 6.3 step8：转折点分析可视化
+### 6.3 step8：转折点分析可视化
 　　关键点位识别，采用折线+散点图，突出特殊点位。
 <img width="1860" height="839" alt="image" src="https://github.com/user-attachments/assets/f17ad374-c374-47e8-a9e9-bb07a63d00d7" />
 ```python
@@ -396,7 +397,7 @@ ax.scatter(r.index, r.values, color='red', s=25, edgecolor='black', linewidth=0.
 ax.spines['top'].set_visible(False)  # 隐藏上边框
 ax.spines['right'].set_visible(False)  # 隐藏右边框
 ```
-## 6.4 step9：移动平均线可视化
+### 6.4 step9：移动平均线可视化
 　　多周期分析，采用多线叠加图，展示不同周期的趋势。
 <img width="1860" height="905" alt="image" src="https://github.com/user-attachments/assets/b5883d08-72e7-4c81-b9c0-59da1aba6f2e" />
 ```python
@@ -414,12 +415,12 @@ plt.legend(fontsize=10)
 plt.grid(True, alpha=0.2)  # 半透明网格
 plt.xticks(rotation=45)  # x轴标签旋转45度
 ```
-# 七、Streamlit网页面部分展示
+## 七、Streamlit网页面部分展示
 <img width="1533" height="2062" alt="image" src="https://github.com/user-attachments/assets/919c77a1-b14a-4f75-b555-9b6a8a88f477" />
 
-# 八、注意事项
+## 八、注意事项
 　　数据完整性: 所有 Excel 数据文件必须与 Python 脚本位于同一目录下，否则会报错。  
 　　模块依赖: 如果 step1.py 到 step10.py 中的函数逻辑发生改变（例如 return_values 函数名更改），主程序将无法正常运行。  
 　　性能优化: 当前代码在每次选择菜单时都会重新读取 Excel 文件，对于大文件可能会有卡顿。在生产环境中，建议使用 @st.cache_data 装饰器来缓存数据读取结果。  
-# 九、总结
+## 九、总结
 　　这个项目展示了如何将复杂的金融数据分析任务分解为清晰的步骤，并通过现代化的Web界面呈现，是一个功能完整的分析工具，涵盖数据科学项目从数据处理到结果展示的全过程；这个系统可以作为金融数据分析的入门项目，也可以作为企业级分析工具的雏形进行进一步开发。
