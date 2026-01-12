@@ -1,4 +1,3 @@
-#streamlit run 03_谢卓君.py
 import streamlit as st
 import step1,step2,step3,step4,step5,step6,step7,step8,step9,step10
 import pandas as pd
